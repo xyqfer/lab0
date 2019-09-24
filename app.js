@@ -39,12 +39,19 @@ app.use(cors({
   origin: '*',
 }));
 
+app.use((req, res, next) => {
+  const ipAddress = req.headers['x-real-ip'] || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  console.log(`${req.originalUrl}, user IP: ${ipAddress}`);
+  next();
+});
+
 app.get('/', function(req, res) {
   res.render('index', { currentTime: new Date() });
 });
 
 app.get('/bt/proxy', require('./routes/bt/proxy'));
 app.get('/youtube/proxy/:id', require('./routes/youtube/proxy'));
+app.get('/image/proxy', require('./routes/image/proxy'));
 app.post('/deploy', require('./routes/deploy'));
 
 app.use(function(req, res, next) {
