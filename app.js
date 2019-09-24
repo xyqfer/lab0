@@ -5,7 +5,10 @@ var timeout = require('connect-timeout');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+const cors = require('cors');
 var AV = require('leanengine');
+
+process.env.YOUTUBE_MAP = JSON.stringify({});
 
 // 加载云函数定义，你可以将云函数拆分到多个文件方便管理，但需要在主文件中加载它们
 require('./cloud');
@@ -32,11 +35,17 @@ app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({extended: false, limit: '50mb'}));
 app.use(cookieParser());
 
+app.use(cors({
+  origin: '*',
+}));
+
 app.get('/', function(req, res) {
   res.render('index', { currentTime: new Date() });
 });
 
 app.get('/bt/proxy', require('./routes/bt/proxy'));
+app.get('/youtube/proxy/:id', require('./routes/youtube/proxy'));
+app.post('/deploy', require('./routes/deploy'));
 
 app.use(function(req, res, next) {
   // 如果任何一个路由都没有返回响应，则抛出一个 404 异常给后续的异常处理器
