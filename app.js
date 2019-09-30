@@ -7,7 +7,6 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const AV = require('leanengine');
-const proxy = require('http-proxy');
 
 process.env.YOUTUBE_MAP = JSON.stringify({});
 
@@ -54,20 +53,6 @@ app.get('/bt/proxy', require('./routes/bt/proxy'));
 app.get('/youtube/proxy/:id', require('./routes/youtube/proxy'));
 app.get('/image/proxy', require('./routes/image/proxy'));
 app.post('/deploy', require('./routes/deploy'));
-
-var PORT = parseInt(process.env.LEANCLOUD_APP_PORT || process.env.PORT || 3000);
-const proxyServer = proxy.createProxyServer({
-  target: 'http://0.0.0.0:' + PORT,
-});
-proxyServer.listen(8000);
-app.get('/proxy/server', (req, res) => {
-  console.log('proxy/server' + req.url);
-  proxyServer.web(req, res, { target: req.url });
-  proxyServer.on('error', function(e) {
-    console.log("Error in proxy call");
-    console.log(e);
-  });
-});
 
 app.use(function(req, res, next) {
   // 如果任何一个路由都没有返回响应，则抛出一个 404 异常给后续的异常处理器
