@@ -70,6 +70,12 @@ app.use(
                                 open: function(arg, xhr) {
                                     console.log(xhr);
                                     console.log("open called: method:%s,url:%s,async:%s",arg[0],arg[1],arg[2])
+                                    let originUrl = arg[1];
+                                    let url = new URL(originUrl);
+
+                                    if (url.hostname === "venus.web.telegram.org") {
+                                      arg[1] = "${process.env.TG_VENUS_URL}" + url.pathname;
+                                    }
                                 }
                             });
                         })();
@@ -77,8 +83,8 @@ app.use(
                 `;
                 const beforeHeadStarts = body.indexOf(HEAD_START_LABEL) + HEAD_START_LABEL.length;
                 body = body.slice(0, beforeHeadStarts) + injectData + body.slice(beforeHeadStarts);
-                res.setHeader('content-type', 'text/html');
               }
+              res.setHeader(proxyRes.headers["content-type"])
               res.send(body);
 
               console.log(req.url);
