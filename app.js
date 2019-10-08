@@ -56,7 +56,10 @@ app.use(
               body.push(chunk);
           });
           proxyRes.on('end', function () {
-              body = Buffer.concat(body).toString();
+              body = Buffer.concat(body)
+              if (!proxyRes.headers["content-type"].startsWith('image/')) {
+                body = body.toString();
+              }
 
               if (req.url === '/') {
                 const HEAD_START_LABEL = '<head>';
