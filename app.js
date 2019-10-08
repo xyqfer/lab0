@@ -84,7 +84,7 @@ app.use(
                 const beforeHeadStarts = body.indexOf(HEAD_START_LABEL) + HEAD_START_LABEL.length;
                 body = body.slice(0, beforeHeadStarts) + injectData + body.slice(beforeHeadStarts);
               }
-              res.setHeader(proxyRes.headers["content-type"])
+              res.setHeader("content-type", proxyRes.headers["content-type"])
               res.send(body);
 
               console.log(req.url);
