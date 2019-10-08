@@ -51,6 +51,13 @@ app.get('/bt/proxy', require('./routes/bt/proxy'));
 app.get('/youtube/proxy/:id', require('./routes/youtube/proxy'));
 app.get('/image/proxy', require('./routes/image/proxy'));
 app.post('/deploy', require('./routes/deploy'));
+app.use(
+  '/search',
+  proxy({ 
+    target: 'https://www.google.com.hk', 
+    changeOrigin: true,
+  }),
+);
 
 app.use(function(req, res, next) {
   // 如果任何一个路由都没有返回响应，则抛出一个 404 异常给后续的异常处理器
