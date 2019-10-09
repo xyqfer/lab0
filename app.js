@@ -44,6 +44,13 @@ app.use((req, res, next) => {
   next();
 });
 
+const sendHeader = (proxyRes, res) => {
+  Object.entries(proxyRes.headers).forEach(([name, value]) => {
+    res.setHeader(name, value)
+  });
+};
+const urlSet = new Set();
+
 app.use(
   '/',
   proxy({ 
@@ -51,20 +58,22 @@ app.use(
       selfHandleResponse : true,
       changeOrigin: true,
       onProxyRes: (proxyRes, req, res) => {
-          const isHomePage = req.url === '/';
+          const { url } = req;
+          const isHomePage = url === '/';
           let body = [];
+
           proxyRes.on('data', function (chunk) {
               if (isHomePage) {
                 body.push(chunk);
               } else {
+                if (!urlSet.has(url)) {
+                  urlSet.add(url);
+                  sendHeader(proxyRes, res);
+                }
                 res.send(chunk);
               }
           });
           proxyRes.on('end', function () {
-              Object.entries(proxyRes.headers).forEach(([name, value]) => {
-                res.setHeader(name, value)
-              });
-
               if (isHomePage) {
                 body = Buffer.concat(body).toString();
                 const HEAD_START_LABEL = '<head>';
@@ -91,11 +100,13 @@ app.use(
                 `;
                 const beforeHeadStarts = body.indexOf(HEAD_START_LABEL) + HEAD_START_LABEL.length;
                 body = body.slice(0, beforeHeadStarts) + injectData + body.slice(beforeHeadStarts);
+                sendHeader();
                 res.send(body);
               }
 
               res.end();
-              console.log(req.url);
+              urlSet.delete(url);
+              console.log(url);
           });
       },
   })
