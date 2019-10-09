@@ -76,6 +76,7 @@ app.use(
           proxyRes.on('end', function () {
               if (isHomePage) {
                 body = Buffer.concat(body).toString();
+                console.log(body);
                 const HEAD_START_LABEL = '<head>';
                 const injectData = `
                     <script>
@@ -101,6 +102,7 @@ app.use(
                 const beforeHeadStarts = body.indexOf(HEAD_START_LABEL) + HEAD_START_LABEL.length;
                 body = body.slice(0, beforeHeadStarts) + injectData + body.slice(beforeHeadStarts);
                 body = body.replace('<link rel=manifest href=manifest.webapp.json>', '');
+                console.log(body.indexOf('manifest.webapp.json'));
                 sendHeader(proxyRes, res);
                 res.write(body);
               }
