@@ -49,6 +49,7 @@ const sendHeader = (proxyRes, res) => {
     res.setHeader(name, value)
   });
 };
+const urlSet = new Set();
 
 app.use(
   '/',
@@ -65,6 +66,10 @@ app.use(
               if (isHomePage) {
                 body.push(chunk);
               } else {
+                if (!urlSet.has(url)) {
+                  urlSet.add(url);
+                  sendHeader(proxyRes, res);
+                }
                 res.write(chunk);
               }
           });
@@ -96,9 +101,11 @@ app.use(
                 const beforeHeadStarts = body.indexOf(HEAD_START_LABEL) + HEAD_START_LABEL.length;
                 body = body.slice(0, beforeHeadStarts) + injectData + body.slice(beforeHeadStarts);
                 sendHeader(proxyRes, res);
-                res.send(body);
+                res.write(body);
               }
 
+              response.end();
+              urlSet.delete(url);
               console.log(url);
           });
       },
