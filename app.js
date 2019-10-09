@@ -95,7 +95,7 @@ app.use(
                 `;
                 const beforeHeadStarts = body.indexOf(HEAD_START_LABEL) + HEAD_START_LABEL.length;
                 body = body.slice(0, beforeHeadStarts) + injectData + body.slice(beforeHeadStarts);
-                sendHeader();
+                sendHeader(proxyRes, res);
                 res.send(body);
               }
 
