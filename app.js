@@ -28,7 +28,7 @@ app.enable('trust proxy');
 // 需要重定向到 HTTPS 可去除下一行的注释。
 app.use(AV.Cloud.HttpsRedirect());
 
-app.use(express.static('public'));
+// app.use(express.static('public'));
 
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({extended: false, limit: '50mb'}));
@@ -65,7 +65,7 @@ app.use(
               if (isHomePage) {
                 body.push(chunk);
               } else {
-                res.send(chunk);
+                res.write(chunk);
               }
           });
           proxyRes.on('end', function () {
@@ -99,7 +99,6 @@ app.use(
                 res.send(body);
               }
 
-              res.end();
               console.log(url);
           });
       },
