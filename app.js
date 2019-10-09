@@ -59,11 +59,20 @@ app.use(
     changeOrigin: true,
   }),
 );
+
+const tgPath = '/apiw1';
 app.use(
-  '/apiw1',
+  `${tgPath}/:name`,
   proxy({ 
     target: 'https://venus.web.telegram.org', 
     changeOrigin: true,
+    router: (req) => {
+      const name = req.path.replace(`${tgPath}/`, '');
+      return `https://${name}.web.telegram.org`;
+    },
+    pathRewrite: function (path, req) { 
+      return tgPath; 
+    }
   }),
 );
 
