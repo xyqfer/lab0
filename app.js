@@ -43,7 +43,7 @@ app.use((req, res, next) => {
 });
 
 app.use(
-  '/',
+  '/orig',
   proxy({ 
       target: 'https://www.google.com.hk',
       changeOrigin: true,
