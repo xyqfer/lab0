@@ -28,8 +28,6 @@ app.enable('trust proxy');
 // 需要重定向到 HTTPS 可去除下一行的注释。
 app.use(AV.Cloud.HttpsRedirect());
 
-// app.use(express.static('public'));
-
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({extended: false, limit: '50mb'}));
 app.use(cookieParser());
@@ -44,73 +42,21 @@ app.use((req, res, next) => {
   next();
 });
 
-const sendHeader = (proxyRes, res) => {
-  Object.entries(proxyRes.headers).forEach(([name, value]) => {
-    res.setHeader(name, value)
-  });
-};
-const urlSet = new Set();
-
 app.use(
   '/',
   proxy({ 
-      target: 'https://web.telegram.org',
-      selfHandleResponse : true,
+      target: 'https://www.google.com.hk',
       changeOrigin: true,
-      onProxyRes: (proxyRes, req, res) => {
-          const { url } = req;
-          const isHomePage = url === '/';
-          let body = [];
-
-          proxyRes.on('data', function (chunk) {
-              if (isHomePage) {
-                body.push(chunk);
-              } else {
-                if (!urlSet.has(url)) {
-                  urlSet.add(url);
-                  sendHeader(proxyRes, res);
-                }
-                res.write(chunk);
-              }
-          });
-          proxyRes.on('end', function () {
-              if (isHomePage) {
-                body = Buffer.concat(body).toString();
-                const HEAD_START_LABEL = '<head>';
-                const injectData = `
-                    <script>
-                        !function(t){function n(e){if(r[e])return r[e].exports;var i=r[e]={exports:{},id:e,loaded:!1};return t[e].call(i.exports,i,i.exports,n),i.loaded=!0,i.exports}var r={};return n.m=t,n.c=r,n.p="",n(0)}([function(t,n,r){r(1)(window)},function(t,n){t.exports=function(t){var n="RealXMLHttpRequest";t.hookAjax=function(t){function r(n){return function(){var r=this.hasOwnProperty(n+"_")?this[n+"_"]:this.xhr[n],e=(t[n]||{}).getter;return e&&e(r,this)||r}}function e(n){return function(r){var e=this.xhr,i=this,o=t[n];if("function"==typeof o)e[n]=function(){t[n](i)||r.apply(e,arguments)};else{var u=(o||{}).setter;r=u&&u(r,i)||r;try{e[n]=r}catch(t){this[n+"_"]=r}}}}function i(n){return function(){var r=[].slice.call(arguments);if(!t[n]||!t[n].call(this,r,this.xhr))return this.xhr[n].apply(this.xhr,r)}}return window[n]=window[n]||XMLHttpRequest,XMLHttpRequest=function(){var t=new window[n];for(var o in t){var u="";try{u=typeof t[o]}catch(t){}"function"===u?this[o]=i(o):Object.defineProperty(this,o,{get:r(o),set:e(o),enumerable:!0})}this.xhr=t},window[n]},t.unHookAjax=function(){window[n]&&(XMLHttpRequest=window[n]),window[n]=void 0},t.default=t}}]);
-                    </script>
-                    <script>
-                        (() => {
-                            hookAjax({
-                                open: function(arg, xhr) {
-                                    console.log(xhr);
-                                    console.log("open called: method:%s,url:%s,async:%s",arg[0],arg[1],arg[2])
-                                    let originUrl = arg[1];
-                                    let url = new URL(originUrl);
-
-                                    if (url.hostname === "venus.web.telegram.org") {
-                                      arg[1] = "${process.env.TG_VENUS_URL}" + url.pathname;
-                                    }
-                                }
-                            });
-                        })();
-                    </script>
-                `;
-                const beforeHeadStarts = body.indexOf(HEAD_START_LABEL) + HEAD_START_LABEL.length;
-                body = body.slice(0, beforeHeadStarts) + injectData + body.slice(beforeHeadStarts);
-                body = body.replace('manifest=webogram.appcache', '');
-                sendHeader(proxyRes, res);
-                res.write(body);
-              }
-
-              res.end();
-              urlSet.delete(url);
-              console.log(url);
-          });
+      pathRewrite: function (path, req) {
+        console.log('path: ', path);
+        return `/orig/${path}`;
       },
-  })
+      router: function(req) {
+        console.log('req.url: ', req.url);
+        console.log('req.path: ', req.path);
+        return 'http://localhost:8004';
+      },
+  }),
 );
 
 
