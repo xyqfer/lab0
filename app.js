@@ -49,7 +49,6 @@ const sendHeader = (proxyRes, res) => {
     res.setHeader(name, value)
   });
 };
-const urlSet = new Set();
 
 app.use(
   '/',
@@ -66,10 +65,6 @@ app.use(
               if (isHomePage) {
                 body.push(chunk);
               } else {
-                if (!urlSet.has(url)) {
-                  urlSet.add(url);
-                  sendHeader(proxyRes, res);
-                }
                 res.send(chunk);
               }
           });
@@ -105,7 +100,6 @@ app.use(
               }
 
               res.end();
-              urlSet.delete(url);
               console.log(url);
           });
       },
