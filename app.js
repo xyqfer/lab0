@@ -51,17 +51,22 @@ app.use(
       selfHandleResponse : true,
       changeOrigin: true,
       onProxyRes: (proxyRes, req, res) => {
+          const isHomePage = req.url === '/';
           let body = [];
           proxyRes.on('data', function (chunk) {
-              body.push(chunk);
+              if (isHomePage) {
+                body.push(chunk);
+              } else {
+                res.send(chunk);
+              }
           });
           proxyRes.on('end', function () {
-              body = Buffer.concat(body)
-              if (!proxyRes.headers["content-type"].startsWith('image/')) {
-                body = body.toString();
-              }
+              Object.entries(proxyRes.headers).forEach(([name, value]) => {
+                res.setHeader(name, value)
+              });
 
-              if (req.url === '/') {
+              if (isHomePage) {
+                body = Buffer.concat(body).toString();
                 const HEAD_START_LABEL = '<head>';
                 const injectData = `
                     <script>
@@ -86,10 +91,10 @@ app.use(
                 `;
                 const beforeHeadStarts = body.indexOf(HEAD_START_LABEL) + HEAD_START_LABEL.length;
                 body = body.slice(0, beforeHeadStarts) + injectData + body.slice(beforeHeadStarts);
+                res.send(body);
               }
-              res.setHeader("content-type", proxyRes.headers["content-type"])
-              res.send(body);
 
+              res.end();
               console.log(req.url);
           });
       },
