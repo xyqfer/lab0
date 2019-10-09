@@ -104,7 +104,7 @@ app.use(
                 res.write(body);
               }
 
-              response.end();
+              res.end();
               urlSet.delete(url);
               console.log(url);
           });
