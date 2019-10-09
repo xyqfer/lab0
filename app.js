@@ -28,6 +28,11 @@ app.enable('trust proxy');
 // 需要重定向到 HTTPS 可去除下一行的注释。
 app.use(AV.Cloud.HttpsRedirect());
 
+app.use((req, res, next) => {
+  res.set('X-Frame-Options', 'sameorigin');
+  next();
+});
+
 app.use(express.static('public'));
 
 app.use(bodyParser.json({limit: '50mb'}));
