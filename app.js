@@ -48,13 +48,11 @@ app.use(
       target: 'https://www.google.com.hk',
       changeOrigin: true,
       pathRewrite: function (path, req) {
-        console.log('path: ', path);
-        return `/orig/${path}`;
+        return path.replace(/^\/orig\//, '');
       },
       router: function(req) {
-        console.log('req.url: ', req.url);
-        console.log('req.path: ', req.path);
-        return 'http://localhost:8004';
+        const u = new URL(req.url.replace(/^\/orig\//, ''));
+        return u.origin;
       },
   }),
 );
