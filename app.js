@@ -7,6 +7,8 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const AV = require('leanengine');
+const expressWs = require('express-ws');
+const { Writable, Readable, } = require('stream');
 const proxy = require('http-proxy-middleware');
 
 // 加载云函数定义，你可以将云函数拆分到多个文件方便管理，但需要在主文件中加载它们
@@ -28,8 +30,8 @@ app.enable('trust proxy');
 // 需要重定向到 HTTPS 可去除下一行的注释。
 app.use(AV.Cloud.HttpsRedirect());
 
-app.use(bodyParser.json({limit: '50mb'}));
-app.use(bodyParser.urlencoded({extended: false, limit: '50mb'}));
+app.use(bodyParser.json({limit: '100mb'}));
+app.use(bodyParser.urlencoded({extended: false, limit: '100mb'}));
 app.use(cookieParser());
 
 app.use(cors({
@@ -40,6 +42,88 @@ app.use((req, res, next) => {
   const ipAddress = req.headers['x-real-ip'] || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   console.log(`${req.originalUrl}, user IP: ${ipAddress}`);
   next();
+});
+
+const { parse } = require('url');
+const net = require('net');
+const CONNECTION_POOL = new Map();
+
+const getConnection = async ({ hostname, port, }) => {
+  const CONNECTION_NAME = `${hostname}:${port}`;
+  if (CONNECTION_POOL.has(CONNECTION_NAME)) {
+    return CONNECTION_POOL.get(CONNECTION_NAME);
+  }
+
+  const { connection, fromPool, } = await new Promise((resolve, reject) => {
+    const connection = net.connect(port, hostname, () => {
+      console.log(`${CONNECTION_NAME} connected`)
+      if (!CONNECTION_POOL.has(CONNECTION_NAME)) {
+        CONNECTION_POOL.set(CONNECTION_NAME, connection);
+        resolve({
+          connection,
+        });
+      } else {
+        resolve({
+          connection: CONNECTION_POOL.get(CONNECTION_NAME),
+          fromPool: true,
+        })
+      }
+    });
+  });
+
+  if (!fromPool) {
+    connection.on('end', (a) => {
+      console.log(`${CONNECTION_NAME} end`);
+      console.log(a)
+      if (CONNECTION_POOL.has(CONNECTION_NAME)) {
+        CONNECTION_POOL.delete(CONNECTION_NAME);
+      }
+    });
+    connection.on('error', function (err) {      
+      console.log(`${CONNECTION_NAME} error`);
+      if (CONNECTION_POOL.has(CONNECTION_NAME)) {
+        CONNECTION_POOL.delete(CONNECTION_NAME);
+      }
+    });
+  }
+
+  return connection;
+};
+
+expressWs(app);
+app.ws('/conn', async function(ws, req) {
+  const connectUrl = req.query['xx-connect-url'];
+  const { hostname, port, } = parse(`http://${connectUrl}`);
+
+  const pSocket = await getConnection({
+    hostname,
+    port,
+  });
+
+  const wsReadable = new Readable({
+    read(size) {},
+  });
+  wsReadable.on('data', (data) => {
+    console.log('wsReadable data ', data.length);        
+  });
+  wsReadable.pipe(pSocket);
+
+  const wsWritable = new Writable({
+    write(chunk, encoding, callback) {
+        console.log('wsWritable write ', chunk.length);
+        ws.send(chunk);
+        callback();
+    },
+  });
+  wsWritable.on('data', (data) => {
+    console.log('wsWritable data ', chunk.length);
+  });
+  pSocket.pipe(wsWritable);
+
+  ws.on('message', function(data) {
+    console.log('ws message ', data.length);
+    wsReadable.push(data);
+  });
 });
 
 app.use(
