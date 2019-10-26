@@ -13,6 +13,8 @@ module.exports = async (req, res) => {
         console.log(req.headers.range);
     }
 
+    console.log(url)
+
     request.get({
         url,
         headers,
