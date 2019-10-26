@@ -141,6 +141,7 @@ const gotConfig = (id, options, additional, config, fromEmbed, callback) => {
       sts: config.sts,
     },
   });
+  console.log(url)
   request(url, options.requestOptions, (err, res, body) => {
     if (err) return callback(err);
     let info = querystring.parse(body);
