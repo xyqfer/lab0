@@ -1,4 +1,4 @@
-const ytdl = require('ytdl-core');
+const ytdl = require('../../utils/node-ytdl-core');
 const YOUTUBE_MAP = {};
 
 const getUrl = async (id) => {
