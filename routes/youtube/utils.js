@@ -8,14 +8,7 @@ const getUrl = async (id) => {
         url = YOUTUBE_MAP[id].url;
     } else {
         const { formats } = await ytdl.getBasicInfo(id);
-        
-        try {
-            url = formats.find((item) => {
-                return item.type.includes('vp9') && item.quality_label === '720p';
-            }).url;
-        } catch(err) {
-            // url = formats[0].url;
-        }
+        url = formats[0].url;
         const expire = (new URL(url)).searchParams.get('expire') * 1000;
 
         YOUTUBE_MAP[id] = {
