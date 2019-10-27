@@ -7,10 +7,8 @@ const getUrl = async (id) => {
     if (YOUTUBE_MAP[id] && (YOUTUBE_MAP[id].expire - Date.now() > 0)) {
         url = YOUTUBE_MAP[id].url;
     } else {
-        const { formats } = await ytdl.getInfo(id);
-        url = formats.find((item) => {
-            return item.container === 'mp4';
-        }).url;
+        const { formats } = await ytdl.getBasicInfo(id);
+        url = formats[0].url;
         const expire = (new URL(url)).searchParams.get('expire') * 1000;
 
         YOUTUBE_MAP[id] = {
