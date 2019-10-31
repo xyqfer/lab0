@@ -72,8 +72,8 @@ const getConnection = async ({ hostname, port, }) => {
   });
 
   if (!fromPool) {
-    connection.on('end', (a) => {
-      console.log(`${CONNECTION_NAME} end`);
+    connection.on('close', (a) => {
+      console.log(`${CONNECTION_NAME} close`);
       console.log(a)
       if (CONNECTION_POOL.has(CONNECTION_NAME)) {
         CONNECTION_POOL.delete(CONNECTION_NAME);
@@ -125,6 +125,8 @@ app.ws('/conn', async function(ws, req) {
     wsReadable.push(data);
   });
 });
+
+app.ws('/conn2', require('./routes/conn2'));
 
 app.use(
   '/orig',
