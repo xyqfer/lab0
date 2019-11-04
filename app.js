@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const AV = require('leanengine');
+const expressWs = require('express-ws');
 const proxy = require('http-proxy-middleware');
 
 // 加载云函数定义，你可以将云函数拆分到多个文件方便管理，但需要在主文件中加载它们
@@ -77,9 +78,15 @@ app.use(
     },
     pathRewrite: function (path, req) { 
       return tgPath; 
-    }
+    },
+    onError: (err, req, res) => {
+      console.error(`tg ${req.path} error`);
+    },
   }),
 );
+
+expressWs(app);
+app.ws('/conn2', require('./routes/conn2'));
 
 app.use(function(req, res, next) {
   // 如果任何一个路由都没有返回响应，则抛出一个 404 异常给后续的异常处理器
