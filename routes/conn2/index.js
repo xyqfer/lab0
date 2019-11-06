@@ -35,8 +35,6 @@ module.exports = async (ws, req) => {
                 port,
             });
 
-            console.log(pSocket)
-
             pSocket.on('error', (err) => {
                 console.log('pSocket err', err);
                 console.log(err);

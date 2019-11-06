@@ -1,3 +1,5 @@
+const zlib = require('zlib');
+
 module.exports = (data) => {
-    return JSON.stringify(data);
+    return zlib.gzipSync(JSON.stringify(data));
 };
