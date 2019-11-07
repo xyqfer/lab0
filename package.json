@@ -5,7 +5,7 @@
   "description": "A sample Node.js app using Express",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node connect-server.js",
     "dev": "nodemon server.js -- "
   },
   "dependencies": {
