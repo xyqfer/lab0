@@ -54,12 +54,14 @@ module.exports = async (ws, req) => {
             const wsWritable = new Writable({
                 write(chunk, encoding, callback) {
                     console.log('wsWritable write ', chunk.length);
-                    ws.send(encodeData({
-                        type: 4,
-                        id,
-                        connectUrl,
-                        payload: encodeBuffer(chunk),
-                    }));
+                    if (ws.readyState != 3) {
+                        ws.send(encodeData({
+                            type: 4,
+                            id,
+                            connectUrl,
+                            payload: encodeBuffer(chunk),
+                        }));
+                    }
                     callback();
                 },
             });
@@ -78,7 +80,7 @@ module.exports = async (ws, req) => {
                 type: 3,
                 id,
                 connectUrl,
-            }))
+            }));
             return;
         }
 
