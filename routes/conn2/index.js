@@ -23,7 +23,7 @@ const generateConnection = async ({ hostname, port, }) => {
 
 module.exports = async (ws, req) => {
     ws.on('message', async (data) => {
-        console.log('ws message ', data.length);
+        // console.log('ws message ', data.length);
 
         const { type, id, connectUrl, payload, } = decodeData(data);
         const key = getKey({ id, connectUrl, });
@@ -47,13 +47,13 @@ module.exports = async (ws, req) => {
                 read(size) { },
             });
             wsReadable.on('data', (data) => {
-                console.log('wsReadable data ', data.length);
+                // console.log('wsReadable data ', data.length);
             });
             wsReadable.pipe(pSocket);
 
             const wsWritable = new Writable({
                 write(chunk, encoding, callback) {
-                    console.log('wsWritable write ', chunk.length);
+                    // console.log('wsWritable write ', chunk.length);
                     if (ws.readyState != 3) {
                         ws.send(encodeData({
                             type: 4,
@@ -66,7 +66,7 @@ module.exports = async (ws, req) => {
                 },
             });
             wsWritable.on('data', (data) => {
-                console.log('wsWritable data ', data.length);
+                // console.log('wsWritable data ', data.length);
             });
             pSocket.pipe(wsWritable);
 
