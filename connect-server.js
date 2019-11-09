@@ -47,7 +47,7 @@ var server = net.createServer(function (socket) {
                 // socket.write('HTTP/1.1 200 OK\r\n\r\n');
                 // socket.end('xxxxxxxxxxxx');
                 let s = '';
-                for (let i = 1; i <= 43200000; i++) {
+                for (let i = 1; i <= 65536; i++) {
                     s += 'x';
                 }
                 console.log('write to ');
