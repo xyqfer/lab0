@@ -50,6 +50,7 @@ var server = net.createServer(function (socket) {
                 for (let i = 1; i <= 43200000; i++) {
                     s += 'x';
                 }
+                console.log('write to ');
                 socket.write(s);
                 // socket.end();
             }
