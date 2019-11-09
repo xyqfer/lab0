@@ -41,7 +41,11 @@ var server = net.createServer(function (socket) {
         if (str.includes('/1.1/functions/_ops/metadatas')) {
             socket.end('HTTP/1.1 404 NOT FOUND\r\n\r\n');
         } else {
-            socket.write('HTTP/1.1 200 OK\r\n\r\n');
+            if (str.includes('us-w1-core-engine-cell')) {
+                socket.end('HTTP/1.1 200 OK\r\n\r\n');
+            } else {
+                socket.write('HTTP/1.1 200 OK\r\n\r\n');
+            }
         }
     });
     // socket.pipe(socket);
