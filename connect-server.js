@@ -38,7 +38,7 @@ var server = net.createServer(function (socket) {
         console.log(buffer.toString());
     });
 
-    socket.write('Echo server\r\n');
+    socket.write('HTTP/1.1 200 Connection Established\r\n\r\n');
     socket.pipe(socket);
 });
 
