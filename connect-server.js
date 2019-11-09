@@ -35,10 +35,15 @@ var server = net.createServer(function (socket) {
     console.log('1111');
     socket.on('data', (buffer) => {
         console.log('socket data ', buffer.length);
-        console.log(buffer.toString());
-    });
+        const str = buffer.toString();
+        console.log(str);
 
-    socket.end('HTTP/1.1 200 OK\r\n\r\n');
+        if (str.includes('/1.1/functions/_ops/metadatas')) {
+            socket.end('HTTP/1.1 404 NOT FOUND\r\n\r\n');
+        } else {
+            socket.end('HTTP/1.1 200 OK\r\n\r\n');
+        }
+    });
     // socket.pipe(socket);
 });
 
