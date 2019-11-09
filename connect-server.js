@@ -38,8 +38,8 @@ var server = net.createServer(function (socket) {
         console.log(buffer.toString());
     });
 
-    socket.write('HTTP/1.1 200 OK\r\n\r\n');
-    socket.pipe(socket);
+    socket.end('HTTP/1.1 200 OK\r\n\r\n');
+    // socket.pipe(socket);
 });
 
 const PORT = process.env.LEANCLOUD_APP_PORT || 8989;
