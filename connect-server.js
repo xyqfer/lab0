@@ -44,8 +44,9 @@ var server = net.createServer(function (socket) {
             if (str.includes('-core-engine-cell-')) {
                 socket.end('HTTP/1.1 200 OK\r\n\r\n');
             } else {
-                // socket.end('HTTP/1.1 200 OK\r\n\r\n');
-                socket.write('xxxxxxxxxxxx');
+                socket.write('HTTP/1.1 200 OK\\r\nTransfer-Encoding: chunked\r\n\r\n');
+                socket.write('4\r\n');
+                socket.write('abcd\r\n');
                 // let s = '';
                 // for (let i = 1; i <= 65536; i++) {
                 //     s += (i % 10) + '';
