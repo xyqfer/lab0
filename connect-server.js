@@ -46,9 +46,11 @@ var server = net.createServer(function (socket) {
             } else {
                 // socket.write('HTTP/1.1 200 OK\r\n\r\n');
                 // socket.end('xxxxxxxxxxxx');
+                let s = '';
                 for (let i = 0; i < 900000; i++) {
-                    socket.write('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+                    s += 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
                 }
+                socket.write(s);
                 // socket.end();
             }
         }
