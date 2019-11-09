@@ -44,14 +44,14 @@ var server = net.createServer(function (socket) {
             if (str.includes('-core-engine-cell-')) {
                 socket.end('HTTP/1.1 200 OK\r\n\r\n');
             } else {
-                socket.write('HTTP/1.1 200 OK\r\n\r\n');
-                // socket.end('xxxxxxxxxxxx');
-                let s = '';
-                for (let i = 1; i <= 65536; i++) {
-                    s += (i % 10) + '';
-                }
-                console.log('write to ');
-                socket.write(s);
+                // socket.end('HTTP/1.1 200 OK\r\n\r\n');
+                socket.end('xxxxxxxxxxxx');
+                // let s = '';
+                // for (let i = 1; i <= 65536; i++) {
+                //     s += (i % 10) + '';
+                // }
+                // console.log('write to ');
+                // socket.write(s);
                 // socket.end();
             }
         }
