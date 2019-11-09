@@ -47,6 +47,7 @@ var server = net.createServer(function (socket) {
                 socket.write('HTTP/1.1 200 OK\\r\nTransfer-Encoding: chunked\r\n\r\n');
                 socket.write('4\r\n');
                 socket.write('abcd\r\n');
+                socket.write();
                 // let s = '';
                 // for (let i = 1; i <= 65536; i++) {
                 //     s += (i % 10) + '';
