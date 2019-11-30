@@ -26,71 +26,75 @@ const generateConnection = async ({ hostname, port, }) => {
 module.exports = async (req, res) => {
     const { data } = req.body;
 
-    await Promise.mapSeries(data, async (item) => {
-        const { type, id, connectUrl, payload, } = decodeData(decodeBuffer(item));
-        const key = getKey({ id, connectUrl, });
+    data.forEach(async (item) => {
+        try {
+            const { type, id, connectUrl, payload, } = decodeData(decodeBuffer(item));
+            const key = getKey({ id, connectUrl, });
 
-        if (type == 1) {
-            const { hostname, port, } = parse(`http://${connectUrl}`);
-            const pSocket = await generateConnection({
-                hostname,
-                port,
-            });
+            if (type == 1) {
+                const { hostname, port, } = parse(`http://${connectUrl}`);
+                const pSocket = await generateConnection({
+                    hostname,
+                    port,
+                });
 
-            pSocket.on('error', (err) => {
-                console.log('pSocket err', err);
-                console.log(err);
-            });
-            pSocket.on('close', () => {
-                socketMap.delete(key);
-            });
+                pSocket.on('error', (err) => {
+                    console.log('pSocket err', err);
+                    console.log(err);
+                });
+                pSocket.on('close', () => {
+                    socketMap.delete(key);
+                });
 
-            const wsReadable = new Readable({
-                read(size) { },
-            });
-            wsReadable.on('data', (data) => {
-                // console.log('wsReadable data ', data.length);
-            });
-            wsReadable.pipe(pSocket);
+                const wsReadable = new Readable({
+                    read(size) { },
+                });
+                wsReadable.on('data', (data) => {
+                    // console.log('wsReadable data ', data.length);
+                });
+                wsReadable.pipe(pSocket);
 
-            const wsWritable = new Writable({
-                write(chunk, encoding, callback) {
-                    // console.log('wsWritable write ', chunk.length);
-                    respList.push(encodeBuffer(encodeData({
-                        type: 4,
-                        id,
-                        connectUrl,
-                        payload: encodeBuffer(chunk),
-                    })));
-                    callback();
-                },
-            });
-            wsWritable.on('data', (data) => {
-                // console.log('wsWritable data ', data.length);
-            });
-            pSocket.pipe(wsWritable);
+                const wsWritable = new Writable({
+                    write(chunk, encoding, callback) {
+                        // console.log('wsWritable write ', chunk.length);
+                        respList.push(encodeBuffer(encodeData({
+                            type: 4,
+                            id,
+                            connectUrl,
+                            payload: encodeBuffer(chunk),
+                        })));
+                        callback();
+                    },
+                });
+                wsWritable.on('data', (data) => {
+                    // console.log('wsWritable data ', data.length);
+                });
+                pSocket.pipe(wsWritable);
 
-            socketMap.set(key, {
-                pSocket,
-                wsReadable,
-                wsWritable,
-            });
+                socketMap.set(key, {
+                    pSocket,
+                    wsReadable,
+                    wsWritable,
+                });
 
-            respList.push(encodeBuffer(encodeData({
-                type: 3,
-                id,
-                connectUrl,
-            })));
-            return;
-        }
-
-        if (type == 2) {
-            const socketItem = socketMap.get(key);
-            if (socketItem) {
-                const { wsReadable, } = socketItem;
-                wsReadable.push(decodeBuffer(payload));
+                respList.push(encodeBuffer(encodeData({
+                    type: 3,
+                    id,
+                    connectUrl,
+                })));
+                return;
             }
-            return;
+
+            if (type == 2) {
+                const socketItem = socketMap.get(key);
+                if (socketItem) {
+                    const { wsReadable, } = socketItem;
+                    wsReadable.push(decodeBuffer(payload));
+                }
+                return;
+            }
+        } catch(err) {
+            console.log(err);
         }
     });
 
