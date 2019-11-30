@@ -24,7 +24,7 @@ const generateConnection = async ({ hostname, port, }) => {
 
 module.exports = async (req, res) => {
     const { data } = req.body;
-    data.forEach((item) => {
+    data.forEach(async (item) => {
         const { type, id, connectUrl, payload, } = decodeData(item);
         const key = getKey({ id, connectUrl, });
 
