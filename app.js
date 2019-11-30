@@ -87,6 +87,7 @@ app.use(
 
 expressWs(app);
 app.ws('/conn2', require('./routes/conn2'));
+app.post('/conn3', require('./routes/conn3'));
 
 app.use(function(req, res, next) {
   // 如果任何一个路由都没有返回响应，则抛出一个 404 异常给后续的异常处理器
