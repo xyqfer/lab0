@@ -1,3 +1,4 @@
+const Promise = require('bluebird');
 const { parse } = require('url');
 const net = require('net');
 const { Writable, Readable } = require('stream');
@@ -24,7 +25,8 @@ const generateConnection = async ({ hostname, port, }) => {
 
 module.exports = async (req, res) => {
     const { data } = req.body;
-    data.forEach(async (item) => {
+
+    await Promise.mapSeries(data, async (item) => {
         const { type, id, connectUrl, payload, } = decodeData(Buffer.from(item));
         const key = getKey({ id, connectUrl, });
 
