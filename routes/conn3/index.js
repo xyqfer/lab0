@@ -94,6 +94,8 @@ module.exports = async (req, res) => {
         }
     });
 
-    res.json([...respList]);
+    res.json({
+        data: [...respList],
+    });
     respList = [];
 };
