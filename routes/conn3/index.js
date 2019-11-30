@@ -27,7 +27,7 @@ module.exports = async (req, res) => {
     const { data } = req.body;
 
     await Promise.mapSeries(data, async (item) => {
-        const { type, id, connectUrl, payload, } = decodeData(Buffer.from(item));
+        const { type, id, connectUrl, payload, } = decodeData(decodeBuffer(item));
         const key = getKey({ id, connectUrl, });
 
         if (type == 1) {
@@ -56,12 +56,12 @@ module.exports = async (req, res) => {
             const wsWritable = new Writable({
                 write(chunk, encoding, callback) {
                     // console.log('wsWritable write ', chunk.length);
-                    respList.push(encodeData({
+                    respList.push(encodeBuffer(encodeData({
                         type: 4,
                         id,
                         connectUrl,
                         payload: encodeBuffer(chunk),
-                    }));
+                    })));
                     callback();
                 },
             });
@@ -76,11 +76,11 @@ module.exports = async (req, res) => {
                 wsWritable,
             });
 
-            respList.push(encodeData({
+            respList.push(encodeBuffer(encodeData({
                 type: 3,
                 id,
                 connectUrl,
-            }));
+            })));
             return;
         }
 
