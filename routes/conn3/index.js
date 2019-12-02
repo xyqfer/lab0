@@ -1,4 +1,3 @@
-const Promise = require('bluebird');
 const { parse } = require('url');
 const net = require('net');
 const { Writable, Readable } = require('stream');
