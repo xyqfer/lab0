@@ -3,7 +3,7 @@
   "license": "MIT",
   "version": "3.1.1",
   "scripts": {
-    "start": "./code-server",
+    "start": "node ./out/node/entry.js",
     "postinstall": "tar -xzf vs.tar.gz && rm vs.tar.gz",
     "clean": "ci/clean.sh",
     "vscode": "ci/vscode.sh",
