@@ -4,7 +4,7 @@
   "version": "3.1.1",
   "scripts": {
     "start": "./code-server",
-    "postinstall": "tar -xf vs.zip && rm vs.zip",
+    "postinstall": "tar -xzf vs.tar.gz && rm vs.tar.gz",
     "clean": "ci/clean.sh",
     "vscode": "ci/vscode.sh",
     "vscode:patch": "cd ./lib/vscode && git apply ../../ci/vscode.patch",
