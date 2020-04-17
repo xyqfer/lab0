@@ -52,7 +52,7 @@
     "vfile-message": "^2.0.2"
   },
   "engines": {
-    "node": "10.x"
+    "node": "12.13.0"
   },
   "commit": "28e91ba70cd70fa9adf3f2e3e3b87631b5667ecf"
 }
