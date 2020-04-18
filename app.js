@@ -56,6 +56,8 @@ const hostProxy = proxy({
   router: (req) => {
     const hostname = req.headers['x-rsshub-hostname'];
     delete req.headers['x-rsshub-hostname'];
+
+    console.log(hostname);
     return `https://${hostname}`;
   },
   onError: (err, req, res) => {
