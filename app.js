@@ -30,7 +30,7 @@ app.enable('trust proxy');
 app.use(AV.Cloud.HttpsRedirect());
 
 app.use((req, res, next) => {
-  res.set('X-Frame-Options', 'sameorigin');
+  // res.set('X-Frame-Options', 'sameorigin');
   next();
 });
 
