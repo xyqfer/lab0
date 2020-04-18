@@ -52,9 +52,13 @@ app.use((req, res, next) => {
 
 const hostProxy = proxy({
   target: '**',
+  followRedirects: true,
   router: (req) => {
     const hostname = req.headers['host'];
     return `https://${hostname}`;
+  },
+  onProxyReq: (proxyReq, req, res) => {
+    proxyReq.setHeader('host', req.headers['host']);
   },
   onError: (err, req, res) => {
     console.error(`host rewrite ${req.path} error`);
