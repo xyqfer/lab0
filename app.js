@@ -50,6 +50,28 @@ app.use((req, res, next) => {
   next();
 });
 
+const hostProxy = proxy({
+  target: '**',
+  changeOrigin: true,
+  router: (req) => {
+    const hostname = req.headers['x-rsshub-hostname'];
+    delete req.headers['x-rsshub-hostname'];
+    return `https://${hostname}`;
+  },
+  onError: (err, req, res) => {
+    console.error(`host rewrite ${req.path} error`);
+  },
+});
+app.use('/*', (req, res, next) => {
+  const hostname = req.headers['x-rsshub-hostname'];
+
+  if (hostname && hostname !== '') {
+    hostProxy(req, res, next);
+  } else {
+    next();
+  }
+});
+
 app.get('/', function(req, res) {
   res.render('index', { currentTime: new Date() });
 });
@@ -58,13 +80,6 @@ app.get('/bt/proxy', require('./routes/bt/proxy'));
 app.get('/youtube/proxy/:id', require('./routes/youtube/proxy'));
 app.get('/image/proxy', require('./routes/image/proxy'));
 app.post('/deploy', require('./routes/deploy'));
-app.use(
-  '/search',
-  proxy({ 
-    target: 'https://www.google.com.hk', 
-    changeOrigin: true,
-  }),
-);
 
 const tgPath = '/apiw1';
 app.use(
