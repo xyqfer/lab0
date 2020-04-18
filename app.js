@@ -52,10 +52,8 @@ app.use((req, res, next) => {
 
 const hostProxy = proxy({
   target: '**',
-  changeOrigin: true,
   router: (req) => {
-    const hostname = req.headers['x-rsshub-hostname'];
-    delete req.headers['x-rsshub-hostname'];
+    const hostname = req.headers['host'];
     return `https://${hostname}`;
   },
   onError: (err, req, res) => {
@@ -67,6 +65,8 @@ app.use('/*', (req, res, next) => {
   console.log({ hostname });
 
   if (hostname && hostname !== '') {
+    delete req.headers['x-rsshub-hostname'];
+    req.headers['host'] = hostname;
     hostProxy(req, res, next);
   } else {
     next();
