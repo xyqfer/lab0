@@ -25,9 +25,9 @@ app.use(AV.Cloud.HttpsRedirect());
 
 app.use(express.static('public'));
 
-app.use(bodyParser.json({limit: '50mb'}));
-app.use(bodyParser.urlencoded({extended: false, limit: '50mb'}));
-app.use(cookieParser());
+// app.use(bodyParser.json({limit: '50mb'}));
+// app.use(bodyParser.urlencoded({extended: false, limit: '50mb'}));
+// app.use(cookieParser());
 
 const hostProxy = proxy({
   target: '**',
