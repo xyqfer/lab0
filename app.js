@@ -40,9 +40,9 @@ app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({extended: false, limit: '50mb'}));
 app.use(cookieParser());
 
-app.use(cors({
-  origin: '*',
-}));
+// app.use(cors({
+//   origin: '*',
+// }));
 
 app.use((req, res, next) => {
   const ipAddress = req.headers['x-real-ip'] || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
