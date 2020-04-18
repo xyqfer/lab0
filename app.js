@@ -5,13 +5,8 @@ const timeout = require('connect-timeout');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const cors = require('cors');
 const AV = require('leanengine');
-const expressWs = require('express-ws');
 const proxy = require('http-proxy-middleware');
-
-// 加载云函数定义，你可以将云函数拆分到多个文件方便管理，但需要在主文件中加载它们
-require('./cloud');
 
 const app = express();
 
@@ -26,29 +21,13 @@ app.use(timeout('600s'));
 app.use(AV.express());
 
 app.enable('trust proxy');
-// 需要重定向到 HTTPS 可去除下一行的注释。
 app.use(AV.Cloud.HttpsRedirect());
-
-app.use((req, res, next) => {
-  // res.set('X-Frame-Options', 'sameorigin');
-  next();
-});
 
 app.use(express.static('public'));
 
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({extended: false, limit: '50mb'}));
 app.use(cookieParser());
-
-// app.use(cors({
-//   origin: '*',
-// }));
-
-app.use((req, res, next) => {
-  const ipAddress = req.headers['x-real-ip'] || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-  console.log(`${req.originalUrl}, user IP: ${ipAddress}`);
-  next();
-});
 
 const hostProxy = proxy({
   target: '**',
@@ -58,17 +37,12 @@ const hostProxy = proxy({
     const hostname = req.headers['host'];
     return `https://${hostname}`;
   },
-  onProxyReq: (proxyReq, req, res) => {
-    console.log('proxyReq', proxyReq.headers);
-    console.log('req', req.headers);
-  },
   onError: (err, req, res) => {
     console.error(`host rewrite ${req.path} error`);
   },
 });
 app.use('/*', (req, res, next) => {
   const hostname = req.headers['x-rsshub-hostname'];
-  console.log({ hostname });
 
   if (hostname && hostname !== '') {
     delete req.headers['x-rsshub-hostname'];
@@ -82,34 +56,6 @@ app.use('/*', (req, res, next) => {
 app.get('/', function(req, res) {
   res.render('index', { currentTime: new Date() });
 });
-
-app.get('/bt/proxy', require('./routes/bt/proxy'));
-app.get('/youtube/proxy/:id', require('./routes/youtube/proxy'));
-app.get('/image/proxy', require('./routes/image/proxy'));
-app.post('/deploy', require('./routes/deploy'));
-
-const tgPath = '/apiw1';
-app.use(
-  `${tgPath}/:name`,
-  proxy({ 
-    target: 'https://venus.web.telegram.org', 
-    changeOrigin: true,
-    router: (req) => {
-      const name = req.path.replace(`${tgPath}/`, '');
-      return `https://${name}.web.telegram.org`;
-    },
-    pathRewrite: function (path, req) { 
-      return tgPath; 
-    },
-    onError: (err, req, res) => {
-      console.error(`tg ${req.path} error`);
-    },
-  }),
-);
-
-expressWs(app);
-app.ws('/conn2', require('./routes/conn2'));
-app.post('/conn3', require('./routes/conn3'));
 
 app.use(function(req, res, next) {
   // 如果任何一个路由都没有返回响应，则抛出一个 404 异常给后续的异常处理器
@@ -135,15 +81,10 @@ app.use(function(err, req, res, next) {
     console.error('请求超时: url=%s, timeout=%d, 请确认方法执行耗时很长，或没有正确的 response 回调。', req.originalUrl, err.timeout);
   }
   res.status(statusCode);
-  // 默认不输出异常详情
-  var error = {};
-  if (app.get('env') === 'development') {
-    // 如果是开发环境，则将异常堆栈输出到页面，方便开发调试
-    error = err;
-  }
+  
   res.render('error', {
     message: err.message,
-    error: error
+    error: err
   });
 });
 
