@@ -30,6 +30,7 @@ app.use(express.static('public'));
 // app.use(cookieParser());
 
 const hostProxy = proxy({
+  target: '**',
   forward: '**',
   xfwd: false,
   // followRedirects: true,
