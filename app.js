@@ -52,6 +52,8 @@ app.use('/*', (req, res, next) => {
     delete req.headers['x-request-id'];
     delete req.headers['x-lc-domain'];
     req.headers['host'] = hostname;
+
+    console.log('after headers', req.headers);
     hostProxy(req, res, next);
   } else {
     next();
