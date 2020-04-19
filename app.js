@@ -38,7 +38,7 @@ const hostProxy = proxy({
     return `https://${hostname}`;
   },
   proxyReq: (proxyReq, req, res, options) => {
-    console.log(proxyReq);
+    console.log("proxyReq");
   },
   onError: (err, req, res) => {
     console.error(`host rewrite ${req.path} error`);
