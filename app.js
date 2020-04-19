@@ -31,7 +31,6 @@ app.use(express.static('public'));
 
 const hostProxy = proxy({
   target: '**',
-  forward: '**',
   xfwd: false,
   // followRedirects: true,
   changeOrigin: true,
