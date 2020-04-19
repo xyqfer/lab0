@@ -31,7 +31,7 @@ app.use(express.static('public'));
 
 const hostProxy = proxy({
   target: '**',
-  // followRedirects: true,
+  followRedirects: true,
   changeOrigin: true,
   router: (req) => {
     const hostname = req.headers['host'];
