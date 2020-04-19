@@ -37,6 +37,7 @@ const hostProxy = proxy({
   changeOrigin: true,
   router: (req) => {
     const hostname = req.headers['host'];
+    console.log('after headers', req.headers);
     return `https://${hostname}`;
   },
   proxyReq: (proxyReq, req, res, options) => {
@@ -58,7 +59,6 @@ app.use('/*', (req, res, next) => {
     delete req.headers['x-lc-domain'];
     req.headers['host'] = hostname;
 
-    console.log('after headers', req.headers);
     hostProxy(req, res, next);
   } else {
     next();
