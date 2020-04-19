@@ -47,6 +47,10 @@ app.use('/*', (req, res, next) => {
   if (hostname && hostname !== '') {
     console.log('req headers', req.headers);
     delete req.headers['x-rsshub-hostname'];
+    delete req.headers['x-forwarded-proto'];
+    delete req.headers['x-real-ip'];
+    delete req.headers['x-request-id'];
+    delete req.headers['x-lc-domain'];
     req.headers['host'] = hostname;
     hostProxy(req, res, next);
   } else {
