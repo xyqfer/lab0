@@ -33,7 +33,7 @@ const hostProxy = proxy({
     return hostname;
   },
   onError: (err, req, res) => {
-    console.error(`host rewrite ${req.path} error`);
+    console.error(`host rewrite ${req.originalUrl} error`);
   },
 });
 app.use('/*', (req, res, next) => {
