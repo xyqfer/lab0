@@ -3,8 +3,6 @@
 const express = require('express');
 const timeout = require('connect-timeout');
 const path = require('path');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
 const AV = require('leanengine');
 const proxy = require('http-proxy-middleware');
 
@@ -25,23 +23,14 @@ app.use(AV.Cloud.HttpsRedirect());
 
 app.use(express.static('public'));
 
-// app.use(bodyParser.json({limit: '50mb'}));
-// app.use(bodyParser.urlencoded({extended: false, limit: '50mb'}));
-// app.use(cookieParser());
-
 const hostProxy = proxy({
   target: '**',
   xfwd: false,
-  // followRedirects: true,
   changeOrigin: true,
   router: (req) => {
     const hostname = req.headers['x-rsshub-hostname'];
     delete req.headers['x-rsshub-hostname'];
-    console.log('after headers', req.headers);
-    return `https://${hostname}`;
-  },
-  proxyReq: (proxyReq, req, res, options) => {
-    console.log("proxyReq");
+    return hostname;
   },
   onError: (err, req, res) => {
     console.error(`host rewrite ${req.path} error`);
@@ -51,7 +40,6 @@ app.use('/*', (req, res, next) => {
   const hostname = req.headers['x-rsshub-hostname'];
 
   if (hostname && hostname !== '') {
-    console.log('req headers', req.headers);
     delete req.headers['x-forwarded-proto'];
     delete req.headers['x-real-ip'];
     delete req.headers['x-request-id'];
