@@ -27,7 +27,6 @@ const hostProxy = proxy({
   target: '**',
   xfwd: false,
   changeOrigin: true,
-  hostRewrite: true,
   router: (req) => {
     const hostname = req.headers['x-rsshub-hostname'];
     delete req.headers['x-rsshub-hostname'];
