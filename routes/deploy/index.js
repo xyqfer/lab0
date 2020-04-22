@@ -6,7 +6,7 @@ module.exports = (req, res) => {
     try {
         const { ref } = req.body;
 
-        if (ref === 'refs/heads/master') {
+        if (ref === `refs/heads/${process.env.DEPLOY_BRANCH}`) {
             rp.post({
                 uri: `${process.env.DEPLOY_URL}`
             }).catch((err) => {
