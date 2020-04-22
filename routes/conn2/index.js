@@ -22,6 +22,14 @@ const generateConnection = async ({ hostname, port, }) => {
 }
 
 module.exports = async (ws, req) => {
+    const ping = () => {
+        ws.send(encodeData({
+            type: 0,
+        }));
+        setTimeout(ping, 2000);
+    };
+    ping();
+
     ws.on('message', async (data) => {
         // console.log('ws message ', data.length);
 
