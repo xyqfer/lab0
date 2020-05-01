@@ -3,7 +3,9 @@ let remoteSignal = [];
 
 module.exports = async (ws, req) => {
     ws.on('message', (info) => {
+        console.log('message');
         const data = JSON.parse(info);
+        console.log(data);
 
         if (data.type == '1') {
             // push
