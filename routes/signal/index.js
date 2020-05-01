@@ -21,9 +21,11 @@ module.exports = async (ws, req) => {
                 signals.push(source.shift());
             }
 
-            ws.send(JSON.stringify({
-                signals,
-            }));
+            if (signals.length > 0) {
+                ws.send(JSON.stringify({
+                    signals,
+                }));
+            }
         }
     });
 };
