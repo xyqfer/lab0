@@ -87,6 +87,7 @@ app.use(
 
 expressWs(app);
 app.ws('/conn2', require('./routes/conn2'));
+app.ws('/signal', require('./routes/signal'));
 app.post('/conn3', require('./routes/conn3'));
 
 app.use(function(req, res, next) {
