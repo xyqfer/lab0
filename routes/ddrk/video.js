@@ -3,6 +3,7 @@ const rp = require('request-promise');
 
 module.exports = async (req, res) => {
     const { id } = req.params;
+    const { view } = req.query;
     const url = `https://ddrk.me/?p=${id}`;
 
     const html = await rp.get({
@@ -17,7 +18,7 @@ module.exports = async (req, res) => {
     const lastModified = $('.post-last-modified-td').text().trim();
     const douList = $('.doulist-item').html();
 
-    res.render('ddrk/video', {
+    res.render(`ddrk/video${view}`, {
         id,
         title,
         data,

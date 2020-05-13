@@ -196,7 +196,8 @@
                                         $source.attr('type', 'application/x-mpegURL');
                                     }
                                     else {
-                                        $source.attr('src', videoServer+':'+'9543'+'/video?id='+vtracksrc+'&type=hls&ee=a.m3u8');
+                                        const videoUrl = '/ddrk/proxy?url=' + encodeURIComponent(videoServer+':'+'9543'+'/video?id='+vtracksrc+'&type=hls&ee=a.m3u8');
+                                        $source.attr('src', videoUrl);
                                         $source.attr('type', 'application/x-mpegURL');
                                     }
                                 }
@@ -208,7 +209,7 @@
                     });
                 }
                 else if (SrcType == 1 ) {
-                    var uurl = 'https://service-k3jx48ay-1251906477.ap-hongkong.apigateway.myqcloud.com/release/hw' + vtracksrc0 + '?ddrkey=' + vtracksrc2;
+                    var uurl = '/ddrk/proxy?url=' + encodeURIComponent('https://service-k3jx48ay-1251906477.ap-hongkong.apigateway.myqcloud.com/release/hw' + vtracksrc0 + '?ddrkey=' + vtracksrc2);
                     $source.attr('src', uurl);
                     $source.attr('type', 'video/mp4');
                     videoElem.load();

@@ -37,13 +37,15 @@ module.exports = async (req, res) => {
 
         const name = $elem.find('.post-box-title > a').text().trim();
         const id = $elem.attr('id').match(/(\d+)/)[1];
-        const url = `/ddrk/video/${id}`;
+        const url = `/ddrk/video/${id}?view=2`;
+        const desc = $elem.find('.post-box-title').next().text().trim();
 
         return {
             cover,
             metas,
             name,
             url,
+            desc,
         };
     }).get();
 

@@ -93,6 +93,9 @@ app.post('/conn3', require('./routes/conn3'));
 app.get('/ddrk/page/:page?', require('./routes/ddrk'));
 app.get('/ddrk/video/:id?', require('./routes/ddrk/video'));
 app.get('/ddrk/proxy', require('./routes/ddrk/proxy'));
+app.get('/ddrk/sw.js', (req, res) => {
+  
+});
 
 app.use(function(req, res, next) {
   // 如果任何一个路由都没有返回响应，则抛出一个 404 异常给后续的异常处理器
