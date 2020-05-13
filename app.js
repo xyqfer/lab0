@@ -90,6 +90,9 @@ app.ws('/conn2', require('./routes/conn2'));
 app.ws('/signal', require('./routes/signal'));
 app.ws('/code', require('./routes/code'));
 app.post('/conn3', require('./routes/conn3'));
+app.get('/ddrk/page/:page?', require('./routes/ddrk'));
+app.get('/ddrk/video/:id?', require('./routes/ddrk/video'));
+app.get('/ddrk/proxy', require('./routes/ddrk/proxy'));
 
 app.use(function(req, res, next) {
   // 如果任何一个路由都没有返回响应，则抛出一个 404 异常给后续的异常处理器
