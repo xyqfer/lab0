@@ -91,7 +91,7 @@ app.ws('/signal', require('./routes/signal'));
 app.ws('/code', require('./routes/code'));
 app.post('/conn3', require('./routes/conn3'));
 app.get('/ddrk/page/:page?', require('./routes/ddrk'));
-app.get('/ddrk/video/:id?', require('./routes/ddrk/video'));
+app.get('/ddrk/video', require('./routes/ddrk/video'));
 app.get('/ddrk/proxy', require('./routes/ddrk/proxy'));
 app.get('/ddrk/sw.js', (req, res) => {
   

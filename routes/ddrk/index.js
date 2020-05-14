@@ -36,8 +36,8 @@ module.exports = async (req, res) => {
         }).join('、');
 
         const name = $elem.find('.post-box-title > a').text().trim();
-        const id = $elem.attr('id').match(/(\d+)/)[1];
-        const url = `/ddrk/video/${id}?view=2`;
+        const origUrl = $elem.find('.post-box-title > a').attr('href');
+        const url = `/ddrk/video?url=${encodeURIComponent(origUrl)}&view=2`;
         const desc = $elem.find('.post-box-title').next().text().trim();
 
         return {

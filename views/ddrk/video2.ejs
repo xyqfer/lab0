@@ -55,7 +55,7 @@ var to_top_options = {"scroll_offset":"100","icon_opacity":"50","style":"icon","
                 #wpcomm span.current{background:#555;}
                 #wpcomm .wpdiscuz-readmore{cursor:pointer;color:#00B38F;}
                 #wpcomm .wpdiscuz-textarea-wrap{border:#D9D9D9 1px solid;} .wpd-custom-field .wcf-pasiv-star, #wpcomm .wpdiscuz-item .wpdiscuz-rating > label {color: #DDDDDD;}
-                #wpcomm .wpdiscuz-item .wpdiscuz-rating:not(:checked) > label:hover,.wpdiscuz-rating:not(:checked) > label:hover ~ label {   }#wpcomm .wpdiscuz-item .wpdiscuz-rating > input ~ label:hover, #wpcomm .wpdiscuz-item .wpdiscuz-rating > input:not(:checked) ~ label:hover ~ label, #wpcomm .wpdiscuz-item .wpdiscuz-rating > input:not(:checked) ~ label:hover ~ label{color: #FFED85;} 
+                #wpcomm .wpdiscuz-item .wpdiscuz-rating > input ~ label:hover, #wpcomm .wpdiscuz-item .wpdiscuz-rating > input:not(:checked) ~ label:hover ~ label, #wpcomm .wpdiscuz-item .wpdiscuz-rating > input:not(:checked) ~ label:hover ~ label{color: #FFED85;} 
                 #wpcomm .wpdiscuz-item .wpdiscuz-rating > input:checked ~ label:hover, #wpcomm .wpdiscuz-item .wpdiscuz-rating > input:checked ~ label:hover, #wpcomm .wpdiscuz-item .wpdiscuz-rating > label:hover ~ input:checked ~ label, #wpcomm .wpdiscuz-item .wpdiscuz-rating > input:checked + label:hover ~ label, #wpcomm .wpdiscuz-item .wpdiscuz-rating > input:checked ~ label:hover ~ label, .wpd-custom-field .wcf-active-star, #wpcomm .wpdiscuz-item .wpdiscuz-rating > input:checked ~ label{ color:#FFD700;}
                 #wpcomm .wc-comment-header{border-top: 1px solid #dedede;}
                 #wpcomm .wc-reply .wc-comment-header{border-top: 1px solid #dedede;}
@@ -102,7 +102,7 @@ var to_top_options = {"scroll_offset":"100","icon_opacity":"50","style":"icon","
                 #wpcomm .wc-follow:hover i,
                 #wpcomm .wc-unfollow:hover i,
                 #wpcomm .wc-follow-active:hover i{color:#00B38F;}
-                                    #comments{ background: url(https://ddrk.me/wp-content/plugins/wpdiscuz/assets/img/dark.png) #222222; padding: 3%; box-sizing: border-box; } #respond{background: url(https://ddrk.me/wp-content/plugins/wpdiscuz/assets/img/dark.png) #222222; padding: 3%; box-sizing: border-box;} .comments-area{background: url(https://ddrk.me/wp-content/plugins/wpdiscuz/assets/img/dark.png) #222222; padding: 3%; box-sizing: border-box; ba}
+                                    #comments{ background: url(https://ddrk.me/wp-content/plugins/wpdiscuz/assets/img/dark.png) #222222; padding: 3%; box-sizing: border-box; } #respond{background: url(https://ddrk.me/wp-content/plugins/wpdiscuz/assets/img/dark.png) #222222; padding: 3%; box-sizing: border-box;} .comments-area{background: url(https://ddrk.me/wp-content/plugins/wpdiscuz/assets/img/dark.png) #222222; padding: 3%; box-sizing: border-box;}
                                 .wpd-wrapper .wpd-list-item.wpd-active{border-top: 3px solid #00B38F;}
                                 .comments-area{width:auto;}
 div .wpdiscuz-front-actions{display: none;}
@@ -252,7 +252,7 @@ h2, h3, h4, h5, h6 {
 }		
 </style>
 <style type='text/css'>
-#to_top_scrollup {left:20px;bottom:120px;}
+#to_top_scrollup {right:20px;bottom:120px;}
 
 body {
     background-color: #000;
@@ -288,12 +288,13 @@ body {
     <div class="post-content">
 
     	<h1 class="post-title"><%=title%></h1>    	<div class="metadata">
-	        <ul><li class="meta_date"><time class="entry-date published updated" datetime="2020-05-12T20:16:53+08:00">2020年5月12日</time></li><li class="meta_categories"><span class="cat-links"><a href="https://ddrk.me/category/drama/western-drama/" rel="category tag">欧美剧</a>、<a href="https://ddrk.me/category/airing/" rel="category tag">热映中</a></span></li><li class="meta_tags"><span class="tags-links">标签：<a href="https://ddrk.me/tag/allegra-edwards/" rel="tag">Allegra Edwards</a>、<a href="https://ddrk.me/tag/andy-allo/" rel="tag">Andy Allo</a>、<a href="https://ddrk.me/tag/kevin-bigley/" rel="tag">Kevin Bigley</a>、<a href="https://ddrk.me/tag/robbie-amell/" rel="tag">Robbie Amell</a>、<a href="https://ddrk.me/tag/zainab-johnson/" rel="tag">Zainab Johnson</a>、<a href="https://ddrk.me/tag/comedy/" rel="tag">喜剧</a>、<a href="https://ddrk.me/tag/mystery/" rel="tag">悬疑</a>、<a href="https://ddrk.me/tag/sci-fi/" rel="tag">科幻</a></span></li><li class="meta_author">由 <span class="author vcard"><a class="url fn n" href="https://ddrk.me/author/ddrkme/">站长</a></span></li></ul>	        <div class="clearfix"></div>
+	        <ul><li class="meta_date"><time class="entry-date published updated"><%=entryDate%></time></li><li class="meta_categories"><span class="cat-links"><%-catLinks%></span></li><li class="meta_tags"><span class="tags-links"><%-tagLinks%></span></li></ul>
 	    </div><!-- /metadata -->
 
     	<div class="entry">
 	<p><div class="wp-playlist wp-video-playlist wp-playlist-light wpse-playlist"><video id="vjsp" class="video-js vjs-default-skin vjs-big-play-centered vjs-fluid vjs-playback-rate" controls="controls" x5-playsinline="" preload="none" webkit-playsinline playsinline></video><div class="wp-playlist-next"></div><div class="wp-playlist-prev"></div>
             <script class="wp-playlist-script" type="application/json"><%-data%></script></div><p class="post-last-modified">最后更新于 <time class="post-last-modified-td"><%=lastModified%></time></p><br />
+            <div class="page-links"><%-pageLinks%></div><br>
             <div class="doulist-item"><%-douList%></div></p>
 		</div><!-- .entry-content -->
 	</div><!-- /post_content -->
@@ -333,7 +334,7 @@ body {
 	</div>
 </script>
 
-</div><span id="to_top_scrollup" class="dashicons dashicons-arrow-up-alt2"><span class="screen-reader-text">Scroll Up</span></span><a id='wpdUserContentInfoAnchor' style='display:none;' rel='#wpdUserContentInfo' data-wpd-lity>wpDiscuz</a><div id='wpdUserContentInfo' style='overflow:auto;background:#FDFDF6;padding:20px;width:600px;max-width:100%;border-radius:6px;' class='lity-hide'></div>
+</div><span id="to_top_scrollup" class="dashicons dashicons-arrow-up-alt2"><span class="screen-reader-text">Scroll Up</span></span>
 <script type="text/javascript" id="sns_global_scripts">function changeSrctype(i) {
 	window.vjs_list_SrcType = i;
 	jQuery('.wp-playlist-playing a').click();
@@ -380,7 +381,7 @@ body {
 <script type='text/javascript' src='https://ddrk.me/wp-includes/js/wp-util.min.js?ver=e655c2299827c162e6389335adcb94f1.1588867691'></script>
 <script type='text/javascript' src='https://ddrk.me/wp-includes/js/backbone.min.js?ver=1.4.0.1588867691'></script>
 <script>
-    var pageId = '<%=id%>';
+    var pageUrl = '<%=url%>';
 </script>
 <script src='/ddrk-assets/video/js/video2.js'></script>
 

@@ -478,7 +478,7 @@
 			new WPPlaylistView( { el: this } );
 		} );
 
-		$('.wpse-playlist').prev().append('&nbsp;<a style="float:right;" href="javascript:;" onclick="changeSrctype(1)" class="outSrc-a">海外节点</a><span style="float:right;">&nbsp;&nbsp;</span><span style="float:right;color:white;" class="chinaSrc-a">国内节点</span>');
+		$('.wpse-playlist').prev().append(`&nbsp;<a style="float:right;" href="${pageUrl}">源站</a><span style="float:right;">&nbsp;&nbsp;</span><a style="float:right;" href="javascript:;" onclick="changeSrctype(1)" class="outSrc-a">海外节点</a><span style="float:right;">&nbsp;&nbsp;</span><span style="float:right;color:white;" class="chinaSrc-a">国内节点</span>`);
 	}
 
 	/**

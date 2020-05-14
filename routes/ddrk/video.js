@@ -2,9 +2,7 @@ const cheerio = require('cheerio');
 const rp = require('request-promise');
 
 module.exports = async (req, res) => {
-    const { id } = req.params;
-    const { view } = req.query;
-    const url = `https://ddrk.me/?p=${id}`;
+    const { url, view } = req.query;
 
     const html = await rp.get({
         uri: url,
@@ -17,12 +15,27 @@ module.exports = async (req, res) => {
     const data = $('.wp-playlist-script').html().trim();
     const lastModified = $('.post-last-modified-td').text().trim();
     const douList = $('.doulist-item').html();
+    const entryDate = $('.entry-date').text().trim();
+    const catLinks = $('.cat-links').html();
+    const tagLinks = $('.tags-links').html();
+
+    $('.page-links > a').each(function() {
+        const $item = $(this);
+        const origUrl = $item.attr('href');
+        const url = `/ddrk/video?url=${encodeURIComponent(origUrl)}&view=2`;
+        $item.attr('href', url);
+    });
+    const pageLinks = $('.page-links').html();
 
     res.render(`ddrk/video${view}`, {
-        id,
+        url,
         title,
         data,
         lastModified,
         douList,
+        entryDate,
+        catLinks,
+        tagLinks,
+        pageLinks,
     });
 };
