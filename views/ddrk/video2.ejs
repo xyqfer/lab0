@@ -285,7 +285,11 @@ body {
 	
 	#sajdhfbjwhe {
 		padding: 0 15% 0 15%;
-	}
+  }
+  
+  #ios_sub_help {
+    display: none;
+  }
 </style>
 	<main id="main" class="site-main" role="main">
 
@@ -302,8 +306,8 @@ body {
 
     	<div class="entry">
 	<p><div class="wp-playlist wp-video-playlist wp-playlist-light wpse-playlist"><video id="vjsp" class="video-js vjs-default-skin vjs-big-play-centered vjs-fluid vjs-playback-rate" controls="controls" x5-playsinline="" preload="none" webkit-playsinline playsinline></video><div class="wp-playlist-next"></div><div class="wp-playlist-prev"></div>
-            <script class="wp-playlist-script" type="application/json"><%-data%></script></div><p class="post-last-modified">最后更新于 <time class="post-last-modified-td"><%=lastModified%></time></p><br />
-            <div class="page-links"><%-pageLinks%></div><br>
+            <script class="wp-playlist-script" type="application/json"><%-data%></script></div><p class="post-last-modified">最后更新于 <time class="post-last-modified-td"><%=lastModified%></time></p>
+            <div class="page-links"><%-pageLinks%></div>
             <div class="doulist-item"><%-douList%></div></p>
 		</div><!-- .entry-content -->
 	</div><!-- /post_content -->
@@ -392,7 +396,7 @@ body {
 <script>
     var pageUrl = '<%=url%>';
 </script>
-<script src='/ddrk-assets/video/js/video2.js'></script>
+<script src='/ddrk-assets/video/js/video2.js?v=2'></script>
 
 </body>
 </html>

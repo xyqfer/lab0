@@ -83,7 +83,9 @@
 				
 				vjsoptions = {
 					controlBar: {
-						volumePanel: {inline: false}
+						volumePanel: {inline: false},
+						playToggle: true,
+						remainingTimeDisplay: true,
 					},
 					userActions: {
 						hotkeys: false,
