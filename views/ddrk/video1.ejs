@@ -6,6 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, viewport-fit=cover">
 <title><%=title%> - 低端影视</title>
 <meta name="referrer" content="never">
+<script>
+  navigator.serviceWorker.register('/ddrk/sw.js', { scope: './' })
+    .then(function (reg) {
+      console.log('success', reg);
+    })
+    .catch(function (err) {
+      console.log('fail', err);
+    });
+</script>
 <link rel='stylesheet' id='wp-block-library-css'  href='https://ddrk.me/wp-includes/css/dist/block-library/style.min.css?ver=e655c2299827c162e6389335adcb94f1.1588867691' type='text/css' media='all' />
 <link rel='stylesheet' id='advanced-floating-content-css'  href='https://ddrk.me/wp-content/plugins/advanced-floating-content-lite/public/css/advanced-floating-content-public.css?ver=1.0.0.1588867691' type='text/css' media='all' />
 <link rel='stylesheet' id='bg-shce-genericons-css'  href='https://ddrk.me/wp-content/plugins/show-hidecollapse-expand/assets/css/genericons/genericons.css?ver=e655c2299827c162e6389335adcb94f1.1588867691' type='text/css' media='all' />
