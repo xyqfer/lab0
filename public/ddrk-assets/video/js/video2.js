@@ -95,8 +95,7 @@
 				};
 			}
 			else {
-				window.history.replaceState(null, null, "?ep="+(this.index+1));
-				videoep = parseInt(GetQueryString("ep"));
+				videoep = this.index + 1;
 			}
 			
 			var subtrackfull=this.current.get( 'subsrc' );
@@ -106,16 +105,6 @@
 			var isAndroid = (deviceInfoQJ.os == "Android");
 			var isAndroidQQ = isAndroid && /MQQBrowser/i.test(navigator.userAgent);
 			//console.log(subtracksrc);
-			
-			const x5PlayerSet = () => {
-				//myPlayer.usingNativeControls(true);
-				var vjsp_html5=document.querySelector("#vjsp_html5_api");
-				vjsp_html5.setAttribute("x5-video-player-type", "h5");
-				vjsp_html5.setAttribute("x5-video-player-fullscreen", "true");
-				vjsp_html5.setAttribute("x5-video-orientation", "landscape|portrait");
-				//vjsp_html5_api.setAttribute("x5-playsinline", "");
-				//$('#to_top_scrollup').remove();
-			}
 			
 			if (subshift==undefined) subshift = "0";
 			var vttshift=this.current.get( 'vttshift' );
@@ -135,9 +124,6 @@
 			var videoCutTime=this.current.get('cut');
 			var VideoNotJump=true;
 			if (videoCutTime == 0) VideoNotJump=false;
-			var logdata = {
-				action: 'is_user_logged_in'
-			};
 			
 			function oneTime(){
 				let srvdate = new Date();
