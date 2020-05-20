@@ -1,0 +1,94 @@
+/* Importing Normalize css */
+@import url("normalize.css");
+
+/* Font */
+@import url('https://fonts.googleapis.com/css?family=Dancing+Script|Roboto:300,400&display=swap');
+
+/* Font Families */
+/* font-family: 'Roboto', sans-serif;
+font-family: 'Dancing Script', cursive; */
+
+* {
+    list-style: none;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    color: teal;
+}
+
+body {
+    font-size: 10px;
+    background-color: blanchedalmond;
+}
+
+h1 {
+    text-align: center;
+    padding: 2rem;
+    font-family: 'Dancing Script', cursive; 
+    font-weight: 200;
+    font-size: 4rem;
+    color: teal;
+}
+
+.flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.outer-container {
+    max-width: 1140px;
+    margin: 0 auto;
+}
+
+.inner-container {
+    position: relative;
+    width: 30%; 
+    border-radius: 2rem; 
+    padding: 1rem;
+    height: 50vh;
+    box-shadow: -2px -2px 8px rgba(250, 230, 211, 0.8)  ,
+                -2px -2px 12px  rgba(250, 230, 211, 0.8),
+                inset 2px 2px 4px  rgba(250, 230, 211, 0.5),
+                 2px 2px 8px  rgba(137, 137, 137, 0.2);
+    margin-bottom: 2.5rem;
+}
+
+.inner-container h6, h2, p {
+    text-align: center;
+    font-weight: 300;
+    font-family: 'Roboto', sans-serif;
+    letter-spacing: .1rem;
+}
+
+h6 {
+    word-spacing: .5rem;
+    font-size: 1.2rem;
+}
+
+h2 {
+    font-size: 2rem;
+    padding: 2rem 0;
+    font-weight: 400;
+}
+
+p {
+    font-size: 1.6rem;
+    padding-bottom: 1rem;
+    word-spacing: .5rem;
+}
+
+.footer {
+    margin-top: 5rem;
+}
+
+.footer h5 {
+    font-size: .8rem;
+    text-align: center;
+    font-weight: 300;
+    padding: 0;
+    line-height: 0;
+}
