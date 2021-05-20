@@ -77,9 +77,11 @@ app.use(
     //   const name = req.path.replace(`${tgPath}/`, '');
     //   return `https://${name}.web.telegram.org`;
     // },
-    // pathRewrite: function (path, req) { 
-    //   return tgPath; 
-    // },
+    pathRewrite: function (path, req) {
+      console.error('pathRewrite', path, req.path);
+      return req.path;
+      // return tgPath;
+    },
     onError: (err, req, res) => {
       console.error(`tg ${req.path} error`);
     },
