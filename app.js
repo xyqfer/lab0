@@ -85,6 +85,26 @@ app.use(
   }),
 );
 
+const tgPath2 = '/apiws';
+app.use(
+  `${tgPath2}/:name`,
+  proxy({ 
+    ws: true,
+    target: 'https://venus.web.telegram.org', 
+    changeOrigin: true,
+    router: (req) => {
+      const name = req.path.replace(`${tgPath2}/`, '');
+      return `https://${name}.web.telegram.org`;
+    },
+    pathRewrite: function (path, req) { 
+      return tgPath2; 
+    },
+    onError: (err, req, res) => {
+      console.error(`tg ${req.path} error`);
+    },
+  }),
+);
+
 expressWs(app);
 app.ws('/conn2', require('./routes/conn2'));
 app.ws('/signal', require('./routes/signal'));
