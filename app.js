@@ -70,15 +70,16 @@ const tgPath = '/apiw1';
 app.use(
   `${tgPath}/:name`,
   proxy({ 
-    target: 'https://venus.web.telegram.org', 
+    // target: 'https://venus.web.telegram.org', 
+    target: process.env.TG_PROXY, 
     changeOrigin: true,
-    router: (req) => {
-      const name = req.path.replace(`${tgPath}/`, '');
-      return `https://${name}.web.telegram.org`;
-    },
-    pathRewrite: function (path, req) { 
-      return tgPath; 
-    },
+    // router: (req) => {
+    //   const name = req.path.replace(`${tgPath}/`, '');
+    //   return `https://${name}.web.telegram.org`;
+    // },
+    // pathRewrite: function (path, req) { 
+    //   return tgPath; 
+    // },
     onError: (err, req, res) => {
       console.error(`tg ${req.path} error`);
     },
